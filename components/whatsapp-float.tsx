@@ -11,10 +11,10 @@ export function WhatsAppFloat() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Contactar a JRP Core por WhatsApp"
-      className="group fixed bottom-5 right-5 z-[60] inline-flex size-14 items-center justify-center rounded-full border border-white/55 bg-[#20c96b] text-white shadow-[0_16px_38px_-14px_rgba(18,140,75,0.7),inset_0_1px_0_rgba(255,255,255,0.32)] transition-[translate,scale,box-shadow,background-color] duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:bg-[#1fbd63] hover:shadow-[0_22px_46px_-14px_rgba(18,140,75,0.72),inset_0_1px_0_rgba(255,255,255,0.4)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#20c96b]/30 focus-visible:ring-offset-4 focus-visible:ring-offset-background active:translate-y-0 active:scale-100 sm:bottom-6 sm:right-6"
+      className="group fixed bottom-5 right-5 z-[60] inline-flex size-[60px] items-center justify-center rounded-full border border-white/55 bg-[#20c96b] text-white shadow-[0_16px_38px_-14px_rgba(18,140,75,0.7),inset_0_1px_0_rgba(255,255,255,0.32)] transition-[translate,scale,box-shadow,background-color] duration-300 ease-out hover:-translate-y-1 hover:scale-[1.03] hover:bg-[#1fbd63] hover:shadow-[0_22px_46px_-14px_rgba(18,140,75,0.72),inset_0_1px_0_rgba(255,255,255,0.4)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#20c96b]/30 focus-visible:ring-offset-4 focus-visible:ring-offset-background active:translate-y-0 active:scale-100 sm:bottom-6 sm:right-6"
     >
-
-      <FaWhatsapp aria-hidden="true" className="relative size-[27px] drop-shadow-sm" />
+      <span aria-hidden="true" className="whatsapp-arrival-ring pointer-events-none absolute inset-0 rounded-full border border-white/70" />
+      <FaWhatsapp aria-hidden="true" className="relative size-[30px] drop-shadow-sm" />
 
       <span
         aria-hidden="true"
