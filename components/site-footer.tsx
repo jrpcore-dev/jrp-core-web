@@ -29,12 +29,12 @@ export function SiteFooter() {
         alt=""
         width={440}
         height={440}
-        className="pointer-events-none absolute -bottom-32 -right-24 z-0 size-[22rem] select-none object-contain opacity-[0.12] [filter:brightness(0)_invert(1)] sm:-bottom-40 sm:-right-16 sm:size-[30rem]"
+        className="pointer-events-none absolute right-[-5rem] top-[58%] z-0 size-[21rem] -translate-y-1/2 select-none object-contain opacity-[0.09] [filter:brightness(0)_invert(1)] sm:right-[-3rem] sm:size-[28rem] lg:right-[calc((100vw_-_72rem)/2)]"
       />
 
       <div className="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
-        <div className="grid gap-10 py-12 sm:grid-cols-2 sm:py-14 lg:grid-cols-[1.4fr_0.7fr_1fr] lg:gap-16 lg:py-16">
-          <div>
+        <div className="grid grid-cols-2 gap-x-5 gap-y-9 py-12 sm:gap-x-8 sm:gap-y-10 sm:py-14 lg:grid-cols-[1.4fr_0.7fr_1fr] lg:gap-16 lg:py-16">
+          <div className="col-span-2 sm:col-span-1">
             <Link
               href="/#soluciones"
               aria-label="JRP Core, volver al inicio"
@@ -77,7 +77,7 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <nav aria-label="Enlaces del sitio">
+          <nav aria-label="Enlaces del sitio" className="min-w-0">
             <h2 className="text-[10px] font-semibold uppercase tracking-[0.17em] text-sky-200">
               Explora
             </h2>
@@ -96,7 +96,7 @@ export function SiteFooter() {
             </ul>
           </nav>
 
-          <div>
+          <div className="min-w-0">
             <h2 className="text-[10px] font-semibold uppercase tracking-[0.17em] text-sky-200">
               Hablemos
             </h2>
@@ -105,7 +105,7 @@ export function SiteFooter() {
             </p>
             <a
               href="mailto:contacto@jrpstudios.dev"
-              className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-slate-100/85 transition-colors hover:text-white focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+              className="mt-4 inline-flex max-w-full items-start gap-2 break-all text-xs font-medium leading-5 text-slate-100/85 transition-colors hover:text-white focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 sm:text-sm"
             >
               <Mail aria-hidden="true" className="size-4 text-sky-200" />
               contacto@jrpstudios.dev
@@ -114,7 +114,7 @@ export function SiteFooter() {
         </div>
 
         <div className="flex flex-col gap-3 border-t border-white/10 py-5 text-[11px] text-slate-300/50 sm:flex-row sm:items-center sm:justify-between">
-          <span>© {new Date().getFullYear()} JRP Core. Todos los derechos reservados.</span>
+          <span>© 2026 JRP Core. Todos los derechos reservados.</span>
           <Link
             href="/#soluciones"
             className="inline-flex w-fit items-center gap-1.5 rounded-full px-2 py-1 font-medium text-slate-200/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
