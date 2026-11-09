@@ -1040,7 +1040,8 @@ function MobileServicesCarousel({ reducedMotion }: { reducedMotion: boolean }) {
 
   const goToMobileService = (index: number) => {
     const carousel = carouselRef.current;
-    const slide = carousel?.children[index];
+    if (!carousel) return;
+    const slide = carousel.children[index];
     if (!(slide instanceof HTMLElement)) return;
     const left = slide.getBoundingClientRect().left - carousel.getBoundingClientRect().left + carousel.scrollLeft;
     carousel.scrollTo({
