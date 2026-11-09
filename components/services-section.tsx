@@ -22,16 +22,20 @@ import {
   ChartNoAxesCombined,
   Code2,
   Globe2,
+  Lock,
   MousePointer2,
   Network,
   Package,
   PanelTop,
+  Plus,
+  RotateCw,
   ScanLine,
   ShoppingBag,
   Sparkles,
   Tag,
   UserPlus,
   Workflow,
+  X,
 } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { TechStackTicker } from "@/components/tech-stack-ticker";
@@ -164,7 +168,7 @@ function PosArtwork({ active, reducedMotion }: { active: boolean; reducedMotion:
   const total = visibleItems.reduce((sum, item) => sum + item.price, 0);
 
   return (
-    <div className="mx-auto w-full max-w-[410px] rounded-2xl border border-white/80 bg-white/85 p-3 shadow-[0_24px_60px_-28px_oklch(0.22_0.06_255/0.3)] backdrop-blur-xl sm:p-4">
+    <div className="mx-auto w-full max-w-[410px] rounded-2xl border border-black/5 bg-white p-3 shadow-[0_24px_60px_-28px_oklch(0.22_0.06_255/0.3)] sm:p-4">
       <div className="flex items-center justify-between border-b border-border/60 pb-3">
         <div className="flex items-center gap-2">
           <span className="flex size-8 items-center justify-center rounded-lg bg-brand text-brand-foreground">
@@ -293,7 +297,7 @@ function AutomationArtwork({ active, reducedMotion }: { active: boolean; reduced
   ];
 
   return (
-    <div className="relative mx-auto flex min-h-60 w-full max-w-[410px] flex-col overflow-hidden rounded-2xl border border-white/60 bg-white/55 p-4">
+    <div className="relative mx-auto flex min-h-60 w-full max-w-[410px] flex-col overflow-hidden rounded-2xl border border-black/5 bg-white p-4 shadow-[0_24px_60px_-28px_oklch(0.22_0.06_255/0.3)]">
       <div className="relative z-10 flex items-center justify-between">
         <span className="text-[10px] font-semibold text-foreground">Flujo: pedido nuevo</span>
         <span className="rounded-full bg-white/85 px-2 py-1 text-[9px] font-medium text-muted-foreground shadow-sm">
@@ -408,7 +412,7 @@ function CrmArtwork({ active, reducedMotion }: { active: boolean; reducedMotion:
   const closed = stage === 2;
 
   return (
-    <div className="mx-auto w-full max-w-[410px] rounded-2xl border border-white/80 bg-white/85 p-3 shadow-[0_24px_60px_-28px_oklch(0.22_0.06_255/0.28)] backdrop-blur-xl sm:p-4">
+    <div className="mx-auto w-full max-w-[410px] rounded-2xl border border-black/5 bg-white p-3 shadow-[0_24px_60px_-28px_oklch(0.22_0.06_255/0.28)] sm:p-4">
       <div className="flex items-center justify-between border-b border-border/65 pb-3">
         <div>
           <p className="text-[11px] font-semibold text-foreground">Seguimiento de clientes</p>
@@ -516,7 +520,7 @@ function WebArtwork({ active, reducedMotion }: { active: boolean; reducedMotion:
             : { x: 150, y: 64, opacity: 0, scale: 1 };
 
   return (
-    <div className="relative mx-auto w-full max-w-[410px] rotate-[-2deg] rounded-2xl border border-white/80 bg-white/85 p-3 shadow-[0_24px_60px_-28px_oklch(0.22_0.06_255/0.3)] backdrop-blur-xl transition-transform duration-500 group-hover:-rotate-1 sm:p-4">
+    <div className="relative mx-auto w-full max-w-[410px] rounded-2xl border border-black/5 bg-white p-3 shadow-[0_24px_60px_-28px_oklch(0.22_0.06_255/0.3)] sm:p-4">
       <div className="flex items-center gap-1.5 border-b border-border/60 pb-3">
         <span className="size-2 rounded-full bg-rose-300" />
         <span className="size-2 rounded-full bg-amber-300" />
@@ -594,7 +598,7 @@ function WebArtwork({ active, reducedMotion }: { active: boolean; reducedMotion:
             transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
             className="absolute -right-4 -top-5 size-24 rounded-full border-[12px] border-dashed border-white/45"
           />
-          <div className="relative w-full rounded-lg border border-white/70 bg-white/80 p-2.5 shadow-lg backdrop-blur">
+          <div className="relative w-full rounded-lg border border-white/70 bg-white p-2.5 shadow-lg">
             <p className="text-[8px] font-medium text-muted-foreground">Contactos este mes</p>
             <p className="mt-0.5 font-mono text-[15px] font-semibold leading-none text-foreground">
               <AnimatedNumber value={leads} reducedMotion={reducedMotion} />
@@ -619,7 +623,7 @@ function WebArtwork({ active, reducedMotion }: { active: boolean; reducedMotion:
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 6, scale: 0.98 }}
             transition={{ duration: 0.35, ease: easeOut }}
-            className="absolute -bottom-4 -right-2 z-30 flex rotate-[2deg] items-center gap-2 rounded-xl border border-white/90 bg-white px-3 py-2 shadow-[0_16px_32px_-14px_oklch(0.2_0.06_258/0.4)]"
+            className="absolute -bottom-4 -right-2 z-30 flex items-center gap-2 rounded-xl border border-white/90 bg-white px-3 py-2 shadow-[0_16px_32px_-14px_oklch(0.2_0.06_258/0.4)]"
           >
             <span className="flex size-7 items-center justify-center rounded-lg bg-brand-soft text-brand">
               <UserPlus aria-hidden="true" className="size-3.5" />
@@ -657,19 +661,23 @@ function ServiceArtwork({
 function SectionIntro({ compact = false }: { compact?: boolean }) {
   return (
     <div>
-      <p className="inline-flex items-center gap-2 rounded-full border border-brand/15 bg-brand-soft/55 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-strong">
-        <span aria-hidden="true" className="size-1.5 rounded-full bg-brand" />
-        Lo que hacemos
+      <p className="inline-flex items-center gap-3 font-mono text-[13px] font-medium text-brand">
+        <span aria-hidden="true" className="h-px w-8 bg-brand/60" />
+        02 / servicios
       </p>
       <h2
         id={compact ? "services-title" : undefined}
-        className={`mt-5 text-balance font-semibold leading-[1.04] tracking-[-0.055em] text-foreground ${
+        className={`mt-5 text-balance font-bold leading-[1.02] tracking-[-0.045em] text-foreground ${
           compact
-            ? "max-w-[16ch] text-[clamp(2rem,3.4vw,3rem)]"
-            : "max-w-[12ch] text-4xl sm:text-5xl"
+            ? "max-w-[15ch] text-[clamp(2.1rem,3.5vw,3.25rem)]"
+            : "max-w-none text-[clamp(2.25rem,9vw,3.25rem)]"
         }`}
       >
-        Tecnología que le sigue el paso a tu negocio.
+        De tu primera página{" "}
+        <span className="bg-gradient-to-r from-[#0063FD] to-[#00B4FD] bg-clip-text pr-[0.06em] font-accent text-[1.08em] font-normal italic tracking-[-0.02em] text-transparent">
+          a todo tu sistema
+        </span>
+        .
       </h2>
       {!compact && (
         <p className="mt-5 max-w-md text-pretty text-base leading-7 text-muted-foreground">
@@ -757,13 +765,127 @@ function ServiceListItem({
   );
 }
 
-function ProgressSegment({ index, progress }: { index: number; progress: MotionValue<number> }) {
+function ProgressSegment({
+  index,
+  progress,
+  color,
+}: {
+  index: number;
+  progress: MotionValue<number>;
+  color: string;
+}) {
   const n = services.length;
   const fill = useTransform(progress, [index / n, (index + 1) / n], [0, 1], { clamp: true });
   return (
-    <span aria-hidden="true" className="h-1 flex-1 overflow-hidden rounded-full bg-foreground/10">
-      <motion.span style={{ scaleX: fill }} className="block size-full origin-left rounded-full bg-brand" />
+    <span aria-hidden="true" className="h-0.5 flex-1 overflow-hidden bg-foreground/[0.06]">
+      <motion.span
+        style={{ scaleX: fill, backgroundColor: color }}
+        className="block size-full origin-left transition-colors duration-500"
+      />
     </span>
+  );
+}
+
+/* App-window chrome per service: route shown in the address bar + accent color. */
+const frameMeta: Record<ServiceVisual, { path: string; accent: string }> = {
+  web: { path: "pagina-web", accent: "#0EA5E9" },
+  pos: { path: "punto-de-venta", accent: "#6366F1" },
+  automation: { path: "automatizaciones", accent: "#10B981" },
+  crm: { path: "crm", accent: "#F59E0B" },
+};
+
+const browserHost = "tunegocio.com";
+
+/** Browser chrome: tab strip with the service as the open tab + toolbar with URL. */
+function BrowserBar({
+  visual,
+  label,
+  icon: Icon,
+  reducedMotion,
+  counter,
+}: {
+  visual: ServiceVisual;
+  label: string;
+  icon: (typeof services)[number]["icon"];
+  reducedMotion: boolean;
+  counter?: string;
+}) {
+  const meta = frameMeta[visual];
+  const swap = {
+    initial: { opacity: 0, y: 5 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -5 },
+    transition: { duration: reducedMotion ? 0 : 0.2 },
+  };
+
+  return (
+    <div className="border-b border-border/80 bg-[#eef1f6]">
+      {/* Tab strip */}
+      <div className="flex items-end gap-2 px-3 pt-2.5">
+        <span aria-hidden="true" className="mb-2.5 mr-1 flex shrink-0 gap-1.5">
+          <span className="size-2.5 rounded-full bg-[#ff5f57]" />
+          <span className="size-2.5 rounded-full bg-[#febc2e]" />
+          <span className="size-2.5 rounded-full bg-[#28c840]" />
+        </span>
+        <div className="flex min-w-0 max-w-[15rem] flex-1 items-center gap-2 rounded-t-[10px] bg-white px-3 py-2 text-[12px] font-medium text-foreground">
+          <Icon aria-hidden="true" className="size-3.5 shrink-0 transition-colors duration-500" style={{ color: meta.accent }} />
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span key={label} {...swap} className="truncate">
+              {label}
+            </motion.span>
+          </AnimatePresence>
+          <X aria-hidden="true" className="ml-auto size-3 shrink-0 text-muted-foreground/60" />
+        </div>
+        <Plus aria-hidden="true" className="mb-2.5 size-3.5 shrink-0 text-muted-foreground/60" />
+      </div>
+
+      {/* Toolbar */}
+      <div className="flex items-center gap-2.5 bg-white px-3 py-2">
+        <span aria-hidden="true" className="flex shrink-0 items-center gap-1.5 text-muted-foreground">
+          <ChevronLeft className="size-4 opacity-70" />
+          <ChevronRight className="size-4 opacity-35" />
+          <RotateCw className="size-3.5 opacity-70" />
+        </span>
+        <div className="flex min-w-0 flex-1 items-center gap-2 rounded-full bg-[#eef1f6] px-3.5 py-1.5 font-mono text-[12px]">
+          <Lock aria-hidden="true" className="size-3 shrink-0 text-muted-foreground" />
+          <span className="text-muted-foreground">{browserHost}/</span>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span key={meta.path} {...swap} className="truncate font-medium text-foreground">
+              {meta.path}
+            </motion.span>
+          </AnimatePresence>
+        </div>
+        {counter && (
+          <span className="shrink-0 font-mono text-[11px] tabular-nums text-muted-foreground">{counter}</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/** Dark "page" behind the mockup, lit from above in the service's accent color. */
+function StageLight({ accent, id, reducedMotion }: { accent: string; id: string; reducedMotion: boolean }) {
+  return (
+    <>
+      <AnimatePresence initial={false}>
+        <motion.div
+          key={id}
+          aria-hidden="true"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: reducedMotion ? 0 : 0.6 }}
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background: `radial-gradient(ellipse 65% 55% at 50% -5%, ${accent}40, transparent 70%), radial-gradient(ellipse 55% 30% at 50% 100%, ${accent}1f, transparent 75%)`,
+          }}
+        />
+      </AnimatePresence>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-10 bottom-[16%] -z-10 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"
+      />
+    </>
   );
 }
 
@@ -792,7 +914,7 @@ function DesktopShowcase({ reducedMotion }: { reducedMotion: boolean }) {
   const artworkY = useTransform(scrollYProgress, (value) => {
     if (reducedMotion) return 0;
     const local = Math.min(value * n - Math.min(n - 1, Math.floor(value * n)), 1);
-    return (0.5 - local) * 28;
+    return Math.round((0.5 - local) * 28);
   });
 
   const scrollToService = (index: number) => {
@@ -808,6 +930,7 @@ function DesktopShowcase({ reducedMotion }: { reducedMotion: boolean }) {
 
   const active = services[activeIndex];
   const ActiveIcon = active.icon;
+  const meta = frameMeta[active.visual];
 
   return (
     <div ref={trackRef} className="relative hidden lg:block" style={{ height: `${n * 65}vh` }}>
@@ -833,119 +956,63 @@ function DesktopShowcase({ reducedMotion }: { reducedMotion: boolean }) {
             </ol>
           </div>
 
-          <div className="relative">
-            {/* Colored glow behind the card, follows the active service */}
-            <AnimatePresence initial={false}>
-              <motion.div
-                key={active.number}
-                aria-hidden="true"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: reducedMotion ? 0 : 0.8 }}
-                className={`pointer-events-none absolute -inset-6 -z-10 rounded-[3rem] blur-3xl ${active.glow}`}
-              />
-            </AnimatePresence>
+          <div className="relative isolate flex h-[min(680px,calc(100svh_-_7.5rem))] flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-[0_1px_2px_oklch(0.2_0.05_258/0.06),0_28px_56px_-36px_oklch(0.2_0.06_258/0.35)]">
+            <BrowserBar
+              visual={active.visual}
+              label={active.eyebrow}
+              icon={ActiveIcon}
+              reducedMotion={reducedMotion}
+              counter={`${active.number} / ${String(n).padStart(2, "0")}`}
+            />
 
-            <div className="relative isolate flex h-[min(640px,calc(100svh_-_8.5rem))] flex-col overflow-hidden rounded-[2rem] border border-white/80 bg-white/40 shadow-[0_40px_90px_-40px_oklch(0.19_0.06_258/0.35),0_10px_26px_-14px_oklch(0.19_0.06_258/0.16),inset_0_1px_0_white] backdrop-blur-2xl">
-              <AnimatePresence initial={false}>
-                <motion.div
-                  key={active.number}
-                  aria-hidden="true"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: reducedMotion ? 0 : 0.6 }}
-                  className={`absolute inset-0 -z-10 bg-gradient-to-br ${active.tint}`}
-                />
-              </AnimatePresence>
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle,oklch(0.3_0.04_258/0.09)_1px,transparent_1.2px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_center,black_35%,transparent_80%)]"
-              />
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -right-24 -top-28 -z-10 size-72 rounded-full border-[32px] border-white/35"
-              />
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -bottom-32 -left-20 -z-10 size-64 rounded-full border-[28px] border-white/25"
-              />
+            {/* Accent line = progress through the four services */}
+            <div className="flex gap-px">
+              {services.map((service, index) => (
+                <ProgressSegment key={service.number} index={index} progress={scrollYProgress} color={meta.accent} />
+              ))}
+            </div>
 
-              {/* Header */}
-              <div className="flex items-center gap-4 px-7 pt-6">
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/80 bg-white/80 text-brand shadow-sm backdrop-blur">
-                  <AnimatePresence mode="wait" initial={false}>
-                    <motion.span
-                      key={active.number}
-                      initial={{ opacity: 0, scale: 0.6, rotate: -20 }}
-                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                      exit={{ opacity: 0, scale: 0.6, rotate: 20 }}
-                      transition={{ duration: reducedMotion ? 0 : 0.25 }}
-                    >
-                      <ActiveIcon aria-hidden="true" className="size-[18px]" />
-                    </motion.span>
-                  </AnimatePresence>
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center justify-between gap-3">
-                    <AnimatePresence mode="wait" initial={false}>
-                      <motion.span
-                        key={active.number}
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -6 }}
-                        transition={{ duration: reducedMotion ? 0 : 0.25 }}
-                        className="truncate text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground"
-                      >
-                        {active.eyebrow}
-                      </motion.span>
-                    </AnimatePresence>
-                    <span className="shrink-0 font-mono text-xs text-muted-foreground/70">
-                      {active.number} / {String(n).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <div className="mt-2 flex gap-1.5">
-                    {services.map((service, index) => (
-                      <ProgressSegment key={service.number} index={index} progress={scrollYProgress} />
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Stage */}
-              <div className="relative mx-5 my-5 flex flex-1 items-center justify-center rounded-[1.5rem] border border-white/70 bg-white/35 px-6 shadow-[inset_0_1px_0_white] xl:px-10">
-                <motion.div style={{ y: artworkY }} className="w-full">
-                  <AnimatePresence mode="wait" initial={false}>
-                    <motion.div
-                      key={active.number}
-                      initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 28, scale: 0.95, filter: "blur(6px)" }}
-                      animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                      exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -20, scale: 0.98, filter: "blur(4px)" }}
-                      transition={{ duration: reducedMotion ? 0 : 0.45, ease: easeOut }}
-                      className="w-full xl:scale-[1.08]"
-                    >
+            {/* Stage: dark studio backdrop lit from above in the service's accent color */}
+            <div className="relative isolate flex flex-1 items-center justify-center overflow-hidden bg-[#0b1120] px-8 xl:px-12">
+              <StageLight accent={meta.accent} id={meta.path} reducedMotion={reducedMotion} />
+              <motion.div style={{ y: artworkY }} className="relative w-full">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={active.number}
+                    initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -16, scale: 0.98 }}
+                    transition={{ duration: reducedMotion ? 0 : 0.4, ease: easeOut }}
+                    className="w-full"
+                  >
+                    <div className="mx-auto w-[410px] lg:[zoom:1.08] xl:[zoom:1.22] min-[100rem]:[zoom:1.4] min-[112rem]:[zoom:1.5]">
                       <ServiceArtwork type={active.visual} active={stageInView} reducedMotion={reducedMotion} />
-                    </motion.div>
-                  </AnimatePresence>
-                </motion.div>
-              </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
+              <span className="absolute bottom-4 left-5 inline-flex items-center gap-2 font-mono text-[11px] text-white/45">
+                <span
+                  aria-hidden="true"
+                  className="size-1.5 rounded-full transition-colors duration-500"
+                  style={{ backgroundColor: meta.accent }}
+                />
+                vista previa
+              </span>
+            </div>
 
-              {/* Footer */}
-              <div className="flex items-center justify-between gap-4 border-t border-foreground/5 px-7 py-4">
-                <span className="text-[11px] font-medium text-muted-foreground">JRP Core · Soluciones digitales</span>
-                <a
-                  href={serviceWhatsappHref(active.eyebrow)}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group inline-flex items-center gap-1.5 rounded-full border border-white/80 bg-white/75 py-1.5 pl-3.5 pr-1.5 text-[12px] font-semibold text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                >
-                  Cotizar este servicio
-                  <span className="flex size-6 items-center justify-center rounded-full bg-brand text-brand-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-                    <ArrowUpRight aria-hidden="true" className="size-3.5" />
-                  </span>
-                </a>
-              </div>
+            {/* Footer */}
+            <div className="flex items-center justify-between gap-4 border-t border-border/80 px-5 py-3.5">
+              <span className="text-[13px] font-medium text-foreground">{active.eyebrow}</span>
+              <a
+                href={serviceWhatsappHref(active.eyebrow)}
+                target="_blank"
+                rel="noreferrer"
+                className="group inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand transition-colors hover:text-brand-strong focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                Cotizar este servicio
+                <ArrowUpRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
             </div>
           </div>
         </div>
@@ -967,7 +1034,7 @@ function MobileServiceBlock({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.45 });
-  const Icon = service.icon;
+  const meta = frameMeta[service.visual];
 
   return (
     <motion.article
@@ -975,38 +1042,41 @@ function MobileServiceBlock({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: reducedMotion ? 0 : 0.55, ease: easeOut }}
-      className="w-full shrink-0 snap-start rounded-[1.6rem] border border-white/75 bg-white/55 p-4 shadow-[0_22px_55px_-34px_oklch(0.19_0.06_258/0.24),inset_0_1px_0_white] backdrop-blur sm:rounded-[1.8rem] sm:p-6"
+      className="w-full shrink-0 snap-start"
     >
-      <div className="flex items-center gap-3">
-        <span className="flex size-10 items-center justify-center rounded-xl border border-white/80 bg-white/75 text-brand shadow-sm">
-          <Icon aria-hidden="true" className="size-[18px]" />
-        </span>
-        <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-          {service.eyebrow}
-        </span>
-        <span className="ml-auto font-mono text-xs text-muted-foreground/65">{service.number}</span>
+      <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-[0_1px_2px_oklch(0.2_0.05_258/0.06),0_24px_48px_-32px_oklch(0.2_0.06_258/0.35)]">
+        <BrowserBar visual={service.visual} label={service.eyebrow} icon={service.icon} reducedMotion={reducedMotion} />
+        <div
+          ref={ref}
+          className="relative isolate flex min-h-[17rem] items-center justify-center overflow-hidden bg-[#0b1120] px-4 py-9 sm:px-10"
+        >
+          <StageLight accent={meta.accent} id={meta.path} reducedMotion={reducedMotion} />
+          <div className="w-full max-w-[410px]">
+            <ServiceArtwork type={service.visual} active={inView} reducedMotion={reducedMotion} />
+          </div>
+        </div>
       </div>
-      <h3 className="mt-5 max-w-[20ch] text-balance text-[clamp(1.6rem,5vw,2.25rem)] font-semibold leading-[1.08] tracking-[-0.045em] text-foreground">
-        {service.title}
-      </h3>
-      <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground sm:text-[15px] sm:leading-7">
-        {service.description}
-      </p>
-      <ul className="mt-5 flex flex-wrap gap-2">
-        {service.tags.map((tag) => (
-          <li
-            key={tag}
-            className="rounded-full border border-border/70 bg-background/80 px-3 py-1.5 text-[10px] font-medium text-foreground/75 shadow-sm sm:text-[11px]"
-          >
-            {tag}
-          </li>
-        ))}
-      </ul>
-      <div
-        ref={ref}
-        className={`relative mt-6 flex min-h-64 items-center justify-center overflow-hidden rounded-[1.5rem] border border-white/80 bg-gradient-to-br p-4 sm:p-6 ${service.tint}`}
-      >
-        <ServiceArtwork type={service.visual} active={inView} reducedMotion={reducedMotion} />
+
+      <div className="mt-6 px-1">
+        <p className="font-mono text-[12px] font-medium text-brand">
+          {service.number} / {service.eyebrow.toLowerCase()}
+        </p>
+        <h3 className="mt-2 text-balance text-[clamp(1.6rem,6vw,2.25rem)] font-bold leading-[1.08] tracking-[-0.04em] text-foreground">
+          {service.title}
+        </h3>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground sm:text-[15px] sm:leading-7">
+          {service.description}
+        </p>
+        <ul className="mt-5 flex flex-wrap gap-2">
+          {service.tags.map((tag) => (
+            <li
+              key={tag}
+              className="rounded-full border border-border/70 bg-white px-3 py-1.5 text-[11px] font-medium text-foreground/75"
+            >
+              {tag}
+            </li>
+          ))}
+        </ul>
       </div>
     </motion.article>
   );
