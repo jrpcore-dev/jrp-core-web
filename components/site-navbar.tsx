@@ -8,7 +8,7 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 const links = [
   { label: "Inicio", href: "#soluciones", id: "soluciones" },
   { label: "Sistemas", href: "#sistemas", id: "sistemas" },
-  { label: "Tecnología", href: "#tecnologia", id: "tecnologia" },
+  { label: "Productos", href: "#productos", id: "productos" },
   { label: "Contacto", href: "#contacto", id: "contacto" },
 ];
 
@@ -26,11 +26,16 @@ export function SiteNavbar() {
 
   useEffect(() => {
     if (!menuOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") setMenuOpen(false);
     };
     window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
   }, [menuOpen]);
 
   useEffect(() => {
@@ -144,49 +149,65 @@ export function SiteNavbar() {
       </div>
 
       <div
-        className={`mx-auto grid max-w-6xl overflow-hidden transition-[grid-template-rows,opacity,margin] duration-300 ease-out lg:hidden ${
-          menuOpen ? "mt-2 grid-rows-[1fr] opacity-100" : "mt-0 grid-rows-[0fr] opacity-0"
-        }`}
+        className={`fixed inset-0 z-[60] lg:hidden ${menuOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+        aria-hidden={!menuOpen}
       >
+        <button
+          type="button"
+          tabIndex={menuOpen ? 0 : -1}
+          aria-label="Cerrar menú"
+          onClick={closeMenu}
+          className={`absolute inset-0 bg-slate-950/35 backdrop-blur-[3px] transition-opacity duration-300 ${menuOpen ? "opacity-100" : "opacity-0"}`}
+        />
         <nav
           id="mobile-navigation"
           aria-label="Navegación móvil"
-          aria-hidden={!menuOpen}
-          className="min-h-0 overflow-hidden rounded-[1.65rem] border border-white/65 bg-white/75 p-2 shadow-[0_24px_70px_-24px_oklch(0.19_0.06_258/0.34),0_6px_18px_-8px_oklch(0.19_0.06_258/0.18),inset_0_1px_0_white] backdrop-blur-2xl"
+          className={`absolute inset-y-0 right-0 flex w-[min(88vw,22rem)] flex-col border-l border-white/70 bg-white/90 p-5 pt-7 shadow-[-24px_0_70px_-24px_oklch(0.19_0.06_258/0.4)] backdrop-blur-2xl transition-transform duration-300 ease-out motion-reduce:transition-none ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
+          {...(!menuOpen ? { "aria-hidden": true, inert: true } : {})}
         >
-          {links.map((link) => {
-            const active = activeSection === link.id;
-            return (
-              <Link
-                key={link.id}
-                href={`/${link.href}`}
-                tabIndex={menuOpen ? 0 : -1}
-                aria-current={active ? "location" : undefined}
-                onClick={closeMenu}
-                className={`flex min-h-12 items-center justify-between rounded-2xl px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring hover:bg-brand-soft/45 ${
-                  active
-                    ? "font-semibold text-brand-strong"
-                    : "text-foreground hover:text-brand"
-                }`}
-              >
-                {link.label}
-                {active ? (
-                  <span aria-hidden="true" className="size-1.5 rounded-full bg-brand shadow-[0_0_8px_var(--brand)]" />
-                ) : (
-                  <ArrowUpRight className="size-4 text-muted-foreground" />
-                )}
-              </Link>
-            );
-          })}
+          <div className="mb-8 flex items-center justify-between">
+            <span className="text-lg font-semibold tracking-[-0.04em] text-foreground">JRP <span className="text-brand">Core</span></span>
+            <button
+              type="button"
+              aria-label="Cerrar menú"
+              onClick={closeMenu}
+              className="inline-flex size-10 items-center justify-center rounded-full border border-border/70 bg-white/80 text-foreground transition-colors hover:bg-brand-soft/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <X aria-hidden="true" className="size-[18px]" />
+            </button>
+          </div>
+          <div className="space-y-1">
+            {links.map((link) => {
+              const active = activeSection === link.id;
+              return (
+                <Link
+                  key={link.id}
+                  href={`/${link.href}`}
+                  tabIndex={menuOpen ? 0 : -1}
+                  aria-current={active ? "location" : undefined}
+                  onClick={closeMenu}
+                  className={`flex min-h-12 items-center justify-between rounded-xl px-3 text-[15px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring hover:bg-brand-soft/45 ${active ? "font-semibold text-brand-strong" : "text-foreground hover:text-brand"}`}
+                >
+                  {link.label}
+                  {active ? (
+                    <span aria-hidden="true" className="size-1.5 rounded-full bg-brand shadow-[0_0_8px_var(--brand)]" />
+                  ) : (
+                    <ArrowUpRight aria-hidden="true" className="size-4 text-muted-foreground" />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
           <Link
             href="/#contacto"
             tabIndex={menuOpen ? 0 : -1}
             onClick={closeMenu}
-            className="mt-2 flex min-h-12 items-center justify-center gap-2 rounded-full bg-brand px-4 text-sm font-semibold text-brand-foreground transition-colors hover:bg-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            className="mt-5 flex min-h-12 items-center justify-center gap-2 rounded-full bg-brand px-4 text-sm font-semibold text-brand-foreground shadow-[0_10px_24px_-12px_var(--brand)] transition-colors hover:bg-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             Hablemos de tu proyecto
-            <ArrowUpRight className="size-4" />
+            <ArrowUpRight aria-hidden="true" className="size-4" />
           </Link>
+          <p className="mt-auto pt-8 text-center text-[10px] font-medium uppercase tracking-[0.13em] text-muted-foreground/70">Ingeniería de software</p>
         </nav>
       </div>
     </header>
