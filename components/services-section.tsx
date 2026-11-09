@@ -17,6 +17,8 @@ import {
   Bell,
   Bot,
   Check,
+  ChevronLeft,
+  ChevronRight,
   ChartNoAxesCombined,
   Code2,
   Globe2,
@@ -32,6 +34,25 @@ import {
   Workflow,
 } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
+import {
+  SiExpo,
+  SiNodedotjs,
+  SiReact,
+  SiShadcnui,
+  SiTailwindcss,
+  SiTypescript,
+  SiVite,
+} from "react-icons/si";
+
+const technologies = [
+  { name: "React", icon: SiReact },
+  { name: "React Native", icon: SiExpo },
+  { name: "TypeScript", icon: SiTypescript },
+  { name: "Tailwind CSS", icon: SiTailwindcss },
+  { name: "App.js / Node.js", icon: SiNodedotjs },
+  { name: "Shadcn UI", icon: SiShadcnui },
+  { name: "Vite", icon: SiVite },
+] as const;
 
 const services = [
   {
@@ -952,7 +973,7 @@ function DesktopShowcase({ reducedMotion }: { reducedMotion: boolean }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Mobile / tablet: simple stacked blocks                              */
+/* Mobile / tablet: swipeable service carousel                          */
 /* ------------------------------------------------------------------ */
 
 function MobileServiceBlock({
@@ -972,7 +993,7 @@ function MobileServiceBlock({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.15 }}
       transition={{ duration: reducedMotion ? 0 : 0.55, ease: easeOut }}
-      className="border-t border-foreground/10 pt-8"
+      className="w-full shrink-0 snap-start rounded-[1.6rem] border border-white/75 bg-white/55 p-4 shadow-[0_22px_55px_-34px_oklch(0.19_0.06_258/0.24),inset_0_1px_0_white] backdrop-blur sm:rounded-[1.8rem] sm:p-6"
     >
       <div className="flex items-center gap-3">
         <span className="flex size-10 items-center justify-center rounded-xl border border-white/80 bg-white/75 text-brand shadow-sm">
@@ -1013,6 +1034,92 @@ function MobileServiceBlock({
 /* Section                                                             */
 /* ------------------------------------------------------------------ */
 
+function MobileServicesCarousel({ reducedMotion }: { reducedMotion: boolean }) {
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
+
+  const goToMobileService = (index: number) => {
+    const carousel = carouselRef.current;
+    const slide = carousel?.children[index];
+    if (!(slide instanceof HTMLElement)) return;
+    const left = slide.getBoundingClientRect().left - carousel.getBoundingClientRect().left + carousel.scrollLeft;
+    carousel.scrollTo({
+      left,
+      behavior: reducedMotion ? "auto" : "smooth",
+    });
+  };
+
+  const updateMobileActiveIndex = () => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+    const slides = Array.from(carousel.children);
+    const closestIndex = slides.reduce((closest, slide, index) => {
+      const closestSlide = slides[closest];
+      const slideLeft = (slide as HTMLElement).getBoundingClientRect().left - carousel.getBoundingClientRect().left + carousel.scrollLeft;
+      const closestLeft = (closestSlide as HTMLElement).getBoundingClientRect().left - carousel.getBoundingClientRect().left + carousel.scrollLeft;
+      return Math.abs(slideLeft - carousel.scrollLeft) < Math.abs(closestLeft - carousel.scrollLeft)
+        ? index
+        : closest;
+    }, 0);
+    setMobileActiveIndex(closestIndex);
+  };
+
+  return (
+    <div className="px-5 py-20 sm:px-8 sm:py-24 lg:hidden">
+      <div className="mx-auto max-w-2xl">
+        <SectionIntro />
+        <div
+          ref={carouselRef}
+          onScroll={updateMobileActiveIndex}
+          role="region"
+          aria-label="Servicios disponibles; desliza horizontalmente para explorar"
+          aria-roledescription="carrusel"
+          className={`mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mt-12 sm:gap-5 ${reducedMotion ? "scroll-auto" : "scroll-smooth"}`}
+        >
+          {services.map((service) => (
+            <MobileServiceBlock key={service.number} service={service} reducedMotion={reducedMotion} />
+          ))}
+        </div>
+        <div className="mt-5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2" role="group" aria-label={`Servicio ${mobileActiveIndex + 1} de ${services.length}`}>
+            {services.map((service, index) => (
+              <button
+                key={service.number}
+                type="button"
+                aria-label={`Ir a ${service.eyebrow}`}
+                aria-current={mobileActiveIndex === index ? "step" : undefined}
+                onClick={() => goToMobileService(index)}
+                className={`h-2 rounded-full transition-[width,background-color] duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${mobileActiveIndex === index ? "w-7 bg-brand" : "w-2 bg-foreground/20 hover:bg-brand/50"}`}
+              />
+            ))}
+            <span className="ml-1 text-[10px] font-medium text-muted-foreground">Desliza para explorar</span>
+          </div>
+          <div className="flex shrink-0 gap-2">
+            <button
+              type="button"
+              aria-label="Servicio anterior"
+              onClick={() => goToMobileService(Math.max(0, mobileActiveIndex - 1))}
+              disabled={mobileActiveIndex === 0}
+              className="inline-flex size-10 items-center justify-center rounded-full border border-border/70 bg-white/70 text-foreground shadow-sm transition-[color,background-color,opacity] hover:bg-white disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <ChevronLeft aria-hidden="true" className="size-4" />
+            </button>
+            <button
+              type="button"
+              aria-label="Siguiente servicio"
+              onClick={() => goToMobileService(Math.min(services.length - 1, mobileActiveIndex + 1))}
+              disabled={mobileActiveIndex === services.length - 1}
+              className="inline-flex size-10 items-center justify-center rounded-full border border-border/70 bg-white/70 text-foreground shadow-sm transition-[color,background-color,opacity] hover:bg-white disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <ChevronRight aria-hidden="true" className="size-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ServicesSection() {
   const reducedMotion = useReducedMotion() === true;
 
@@ -1029,16 +1136,17 @@ export function ServicesSection() {
 
       <div className="relative z-10">
         <DesktopShowcase reducedMotion={reducedMotion} />
-
-        <div className="px-5 py-20 sm:px-8 sm:py-24 lg:hidden">
-          <div className="mx-auto max-w-2xl">
-            <SectionIntro />
-            <div className="mt-12 space-y-14">
-              {services.map((service) => (
-                <MobileServiceBlock key={service.number} service={service} reducedMotion={reducedMotion} />
-              ))}
-            </div>
-          </div>
+        <MobileServicesCarousel reducedMotion={reducedMotion} />
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-5 pb-16 sm:gap-2.5 sm:px-8 sm:pb-20 lg:px-10 lg:pb-24" role="group" aria-label="Tecnologías">
+          {technologies.map(({ name, icon: Icon }) => (
+            <span
+              key={name}
+              className="inline-flex min-h-10 items-center gap-2 rounded-full border border-border/60 bg-white/55 px-3 py-2 text-[11px] font-medium text-foreground/75 shadow-sm backdrop-blur-sm transition-colors hover:border-brand/25 hover:text-brand"
+            >
+              <Icon aria-hidden="true" className="size-3.5 text-brand/80" />
+              {name}
+            </span>
+          ))}
         </div>
       </div>
     </section>
