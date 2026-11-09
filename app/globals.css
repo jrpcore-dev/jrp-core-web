@@ -192,6 +192,13 @@
   }
 }
 
+/* Terminal block cursor blink (tech stack prompt). */
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+
 /*
  * Wider page container on large monitors. Every section uses max-w-6xl
  * (72rem / 1152px), which leaves too much empty space on 1600px+ screens.

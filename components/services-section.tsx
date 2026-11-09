@@ -34,25 +34,7 @@ import {
   Workflow,
 } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
-import {
-  SiExpo,
-  SiNodedotjs,
-  SiReact,
-  SiShadcnui,
-  SiTailwindcss,
-  SiTypescript,
-  SiVite,
-} from "react-icons/si";
-
-const technologies = [
-  { name: "React", icon: SiReact },
-  { name: "React Native", icon: SiExpo },
-  { name: "TypeScript", icon: SiTypescript },
-  { name: "Tailwind CSS", icon: SiTailwindcss },
-  { name: "App.js / Node.js", icon: SiNodedotjs },
-  { name: "Shadcn UI", icon: SiShadcnui },
-  { name: "Vite", icon: SiVite },
-] as const;
+import { TechStackTicker } from "@/components/tech-stack-ticker";
 
 const services = [
   {
@@ -1138,16 +1120,8 @@ export function ServicesSection() {
       <div className="relative z-10">
         <DesktopShowcase reducedMotion={reducedMotion} />
         <MobileServicesCarousel reducedMotion={reducedMotion} />
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-5 pb-16 sm:gap-2.5 sm:px-8 sm:pb-20 lg:px-10 lg:pb-24" role="group" aria-label="Tecnologías">
-          {technologies.map(({ name, icon: Icon }) => (
-            <span
-              key={name}
-              className="inline-flex min-h-10 items-center gap-2 rounded-full border border-border/60 bg-white/55 px-3 py-2 text-[11px] font-medium text-foreground/75 shadow-sm backdrop-blur-sm transition-colors hover:border-brand/25 hover:text-brand"
-            >
-              <Icon aria-hidden="true" className="size-3.5 text-brand/80" />
-              {name}
-            </span>
-          ))}
+        <div className="mx-auto max-w-6xl px-5 pb-16 sm:px-8 sm:pb-20 lg:px-10 lg:pb-24">
+          <TechStackTicker />
         </div>
       </div>
     </section>
