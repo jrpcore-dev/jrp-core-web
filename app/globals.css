@@ -191,3 +191,19 @@
     font-family: var(--font-heading);
   }
 }
+
+/*
+ * Wider page container on large monitors. Every section uses max-w-6xl
+ * (72rem / 1152px), which leaves too much empty space on 1600px+ screens.
+ */
+@media (min-width: 100rem) {
+  :root {
+    --container-6xl: 84rem; /* 1344px */
+  }
+}
+
+@media (min-width: 112rem) {
+  :root {
+    --container-6xl: 90rem; /* 1440px, e.g. 1920px monitors */
+  }
+}
