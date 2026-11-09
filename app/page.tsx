@@ -1,7 +1,7 @@
 import { SiteNavbar } from "@/components/site-navbar";
 import { Hero } from "@/components/hero";
 import { ServicesSection } from "@/components/services-section";
-import { EcosystemSection } from "@/components/ecosystem-section";
+import { ProcessSection } from "@/components/process-section";
 import { ProductShowcase } from "@/components/product-showcase";
 import { FinalCta } from "@/components/final-cta";
 
@@ -12,7 +12,7 @@ export default function Home() {
       <main aria-label="Inicio">
         <Hero />
         <ServicesSection />
-        <EcosystemSection />
+        <ProcessSection />
         <ProductShowcase />
         <FinalCta />
       </main>

@@ -12,7 +12,7 @@ const whatsappUrl =
 const links = [
   { label: "Inicio", href: "#soluciones", id: "soluciones" },
   { label: "Servicios", href: "#sistemas", id: "sistemas" },
-  { label: "Ecosistema", href: "#ecosistema", id: "ecosistema" },
+  { label: "Proceso", href: "#proceso", id: "proceso" },
   { label: "Productos", href: "#productos", id: "productos" },
   { label: "Contacto", href: "#contacto", id: "contacto" },
 ];
