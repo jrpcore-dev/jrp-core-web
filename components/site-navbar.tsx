@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 
@@ -14,10 +15,10 @@ const links = [
   { label: "Servicios", href: "#sistemas", id: "sistemas" },
   { label: "Proceso", href: "#proceso", id: "proceso" },
   { label: "Productos", href: "#productos", id: "productos" },
-  { label: "Contacto", href: "#contacto", id: "contacto" },
 ];
 
 export function SiteNavbar() {
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("soluciones");
@@ -114,7 +115,9 @@ export function SiteNavbar() {
           <nav aria-label="Navegación principal" className="hidden items-center lg:flex">
             <ul className="flex items-center gap-0.5" onMouseLeave={() => setHovered(null)}>
               {links.map((link) => {
-                const active = activeSection === link.id;
+                const active = pathname === "/vendia" || pathname === "/barberia"
+                  ? link.id === "productos"
+                  : activeSection === link.id;
                 const spring = reducedMotion
                   ? { duration: 0 }
                   : ({ type: "spring", stiffness: 480, damping: 38 } as const);
@@ -213,7 +216,9 @@ export function SiteNavbar() {
           </div>
           <div className="space-y-1">
             {links.map((link) => {
-              const active = activeSection === link.id;
+              const active = pathname === "/vendia" || pathname === "/barberia"
+                ? link.id === "productos"
+                : activeSection === link.id;
               return (
                 <Link
                   key={link.id}
