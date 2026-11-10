@@ -38,7 +38,7 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
-import { TechStackTicker } from "@/components/tech-stack-ticker";
+import { serviceStacks, StackIcons, type TechName } from "@/components/tech-stack";
 
 const services = [
   {
@@ -787,12 +787,26 @@ function ProgressSegment({
 }
 
 /* App-window chrome per service: route shown in the address bar + accent color. */
-const frameMeta: Record<ServiceVisual, { path: string; accent: string }> = {
-  web: { path: "pagina-web", accent: "#0EA5E9" },
-  pos: { path: "punto-de-venta", accent: "#6366F1" },
-  automation: { path: "automatizaciones", accent: "#10B981" },
-  crm: { path: "crm", accent: "#F59E0B" },
+const frameMeta: Record<ServiceVisual, { path: string; accent: string; stack: readonly TechName[] }> = {
+  web: { path: "pagina-web", accent: "#0EA5E9", stack: serviceStacks.web.stack },
+  pos: { path: "punto-de-venta", accent: "#6366F1", stack: serviceStacks.pos.stack },
+  automation: { path: "automatizaciones", accent: "#10B981", stack: serviceStacks.automation.stack },
+  crm: { path: "crm", accent: "#F59E0B", stack: serviceStacks.crm.stack },
 };
+
+function QuoteLink({ service }: { service: string }) {
+  return (
+    <a
+      href={serviceWhatsappHref(service)}
+      target="_blank"
+      rel="noreferrer"
+      className="group inline-flex items-center gap-1.5 whitespace-nowrap text-[13px] font-semibold text-brand transition-colors hover:text-brand-strong focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      Cotizar
+      <ArrowUpRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+    </a>
+  );
+}
 
 const browserHost = "tunegocio.com";
 
@@ -1001,19 +1015,8 @@ function DesktopShowcase({ reducedMotion }: { reducedMotion: boolean }) {
               </span>
             </div>
 
-            {/* Footer */}
-            <div className="flex items-center justify-between gap-4 border-t border-border/80 px-5 py-3.5">
-              <span className="text-[13px] font-medium text-foreground">{active.eyebrow}</span>
-              <a
-                href={serviceWhatsappHref(active.eyebrow)}
-                target="_blank"
-                rel="noreferrer"
-                className="group inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand transition-colors hover:text-brand-strong focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                Cotizar este servicio
-                <ArrowUpRight aria-hidden="true" className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
-            </div>
+            {/* The stack this service is built with */}
+            <StackIcons techs={meta.stack} action={<QuoteLink service={active.eyebrow} />} />
           </div>
         </div>
       </div>
@@ -1055,6 +1058,7 @@ function MobileServiceBlock({
             <ServiceArtwork type={service.visual} active={inView} reducedMotion={reducedMotion} />
           </div>
         </div>
+        <StackIcons techs={meta.stack} action={<QuoteLink service={service.eyebrow} />} />
       </div>
 
       <div className="mt-6 px-1">
@@ -1190,9 +1194,6 @@ export function ServicesSection() {
       <div className="relative z-10">
         <DesktopShowcase reducedMotion={reducedMotion} />
         <MobileServicesCarousel reducedMotion={reducedMotion} />
-        <div className="mx-auto max-w-6xl px-5 pb-16 sm:px-8 sm:pb-20 lg:px-10 lg:pb-24">
-          <TechStackTicker />
-        </div>
       </div>
     </section>
   );
