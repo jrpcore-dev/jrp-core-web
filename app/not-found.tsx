@@ -1,180 +1,147 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, ChevronLeft, ChevronRight, Home, Lock, RotateCw } from "lucide-react";
 import Image from "next/image";
-import { MotionConfig, motion } from "framer-motion";
-import { ArrowUpRight, Code2, Home, Mail, Scissors, Store } from 'lucide-react';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { SiteNavbar } from "@/components/site-navbar";
 
-const QUICK_CARDS = [
-  {
-    label: 'Vendia POS',
-    description: 'Punto de venta para comercios',
-    href: '/vendia',
-    icon: Store,
-    background: '#0068f9',
-    foreground: '#ffffff',
-    rotation: -6,
-    position: 'xl:left-0 xl:top-[14%]',
-    delay: 0.12,
-  },
-  {
-    label: 'Barbería POS',
-    description: 'Citas, sillones y comisiones',
-    href: '/barberia',
-    icon: Scissors,
-    background: '#6736eb',
-    foreground: '#ffffff',
-    rotation: 5,
-    position: 'xl:right-0 xl:top-[8%]',
-    delay: 0.18,
-  },
-  {
-    label: 'Sistemas a medida',
-    description: 'Software para tu operación',
-    href: '/#sistemas',
-    icon: Code2,
-    background: '#046645',
-    foreground: '#ffffff',
-    rotation: 4,
-    position: 'xl:bottom-[12%] xl:left-[3%]',
-    delay: 0.24,
-  },
-  {
-    label: 'Hablemos',
-    description: 'Cuéntanos qué estabas buscando',
-    href: '/#contacto',
-    icon: Mail,
-    background: '#f4f0ff',
-    foreground: '#121722',
-    rotation: -4,
-    position: 'xl:bottom-[16%] xl:right-[2%]',
-    delay: 0.3,
-  },
-];
+/*
+ * 404: big "4 0 4" where the 0 is the JRP Core mark, floating as if lost,
+ * with its shadow breathing on the floor. Simple copy and two ways out.
+ */
+
+const easeOut = [0.22, 1, 0.36, 1] as const;
 
 export default function NotFound() {
+  const reducedMotion = useReducedMotion() === true;
+  const pathname = usePathname() ?? "/";
+  const path = decodeURIComponent(pathname).slice(0, 40) || "/";
+
+  // Type the attempted path once, then strike it through.
+  const [chars, setChars] = useState(0);
+  const typingDone = reducedMotion || chars >= path.length;
+  useEffect(() => {
+    if (typingDone) return;
+    const id = window.setInterval(() => setChars((c) => c + 1), 45);
+    return () => window.clearInterval(id);
+  }, [typingDone]);
+  const typedPath = reducedMotion ? path : path.slice(0, chars);
+
+  const digit = (delay: number) => ({
+    initial: reducedMotion ? false : { opacity: 0, y: 40 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: reducedMotion ? 0 : 0.7, delay: reducedMotion ? 0 : delay, ease: easeOut },
+  });
+
+  const float = { duration: 3.6, repeat: Infinity, ease: "easeInOut" } as const;
+
   return (
-    <MotionConfig reducedMotion="user">
-      <title>404 | JRP Core</title>
-      <main className="relative min-h-screen overflow-hidden text-[#121722] selection:bg-[#0068f9]/20 selection:text-[#121722]">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute inset-0 bg-[linear-gradient(160deg,#f4f8fc_0%,#ffffff_45%,#e8f7fc_78%,#dceef8_100%)]" />
+    <>
+      <title>Página no encontrada | JRP Core</title>
+      <SiteNavbar />
+      <main className="relative isolate flex min-h-[calc(100svh_-_5rem)] items-center px-5 py-16 sm:px-8 lg:px-10">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_55%_45%_at_50%_35%,color-mix(in_oklab,var(--brand)_9%,transparent),transparent_70%)]"
+        />
+
+        <div className="mx-auto flex w-full max-w-3xl flex-col items-center text-center">
+          {/* Just the browser's address bar, with the path the visitor tried, typed then struck through */}
+          <motion.div
+            {...digit(0)}
+            className="mb-10 flex max-w-full items-center gap-3 rounded-full border border-border bg-white py-2 pl-3.5 pr-4 shadow-[0_10px_24px_-18px_oklch(0.2_0.06_258/0.4)]"
+          >
+            <span aria-hidden="true" className="flex shrink-0 items-center gap-1.5 text-muted-foreground">
+              <ChevronLeft className="size-4 opacity-70" />
+              <ChevronRight className="size-4 opacity-35" />
+              <RotateCw className="size-3.5 opacity-70" />
+            </span>
+            <span className="flex min-w-0 items-center gap-2 font-mono text-[13px]">
+              <Lock aria-hidden="true" className="size-3 shrink-0 text-muted-foreground" />
+              <span className="shrink-0 text-muted-foreground">jrpcore</span>
+              <span className="relative min-w-0 truncate font-medium text-foreground">
+                {typedPath}
+                {!typingDone && (
+                  <span aria-hidden="true" className="ml-px inline-block h-[1em] w-px translate-y-[0.15em] bg-foreground/70" />
+                )}
+                <motion.span
+                  aria-hidden="true"
+                  className="absolute inset-x-0 top-1/2 h-[1.5px] origin-left bg-rose-500"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: typingDone ? 1 : 0 }}
+                  transition={{ duration: reducedMotion ? 0 : 0.35, delay: reducedMotion ? 0 : 0.15, ease: easeOut }}
+                />
+              </span>
+            </span>
+            <span className="sr-only">Dirección no encontrada: {path}</span>
+          </motion.div>
+
+          {/* 4 [logo] 4 */}
           <div
-            className="absolute inset-0 opacity-60"
-            style={{
-              backgroundImage: 'radial-gradient(rgba(0,104,249,0.10) 1px, transparent 1px)',
-              backgroundSize: '28px 28px',
-              WebkitMaskImage: 'radial-gradient(ellipse at 50% 42%, black 0%, transparent 72%)',
-              maskImage: 'radial-gradient(ellipse at 50% 42%, black 0%, transparent 72%)',
-            }}
-          />
-          <div className="absolute -top-36 left-1/2 h-[420px] w-[760px] -translate-x-1/2 rounded-full bg-[#0068f9]/10 blur-[120px]" />
-          <div className="absolute -bottom-24 -left-24 h-[320px] w-[320px] rounded-full bg-[#6736eb]/10 blur-[110px]" />
-          <div className="absolute -right-20 top-1/3 h-[300px] w-[300px] rounded-full bg-[#046645]/10 blur-[110px]" />
-        </div>
+            aria-hidden="true"
+            className="flex items-center font-heading text-[clamp(7.5rem,26vw,16rem)] font-bold leading-none tracking-[-0.06em] text-foreground"
+          >
+            <motion.span {...digit(0.05)}>4</motion.span>
 
-        <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-[1200px] flex-col px-5 py-6 sm:px-8">
-          <header className="flex flex-wrap items-center justify-between gap-3">
-            <a
-              href="/"
-              aria-label="Ir a la página principal de JRP Core"
-              className="inline-flex items-center text-[17px] font-semibold tracking-tight text-[#121722]"
-            >
-              <span className="flex items-center gap-2.5">
-                <Image src="/jrp-mark.png" alt="" width={42} height={42} className="size-10 object-contain" />
-                <span className="font-semibold">JRP <span className="text-[#0068f9]">Core</span></span>
-              </span>
-            </a>
-
-            <div className="inline-flex items-center gap-2 rounded-[100px] border border-[#dce7f0] bg-white/80 px-3 py-1.5 text-[11px] font-medium text-[#777c86] backdrop-blur">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-[#0068f9] opacity-60 motion-safe:animate-ping" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#0068f9]" />
-              </span>
-              Estado: ruta no encontrada
-            </div>
-          </header>
-
-          <section className="relative flex flex-1 flex-col items-center justify-center py-14 xl:min-h-[640px] xl:py-20">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10 mx-auto flex w-full max-w-2xl flex-col items-center text-center"
-            >
-              <div className="inline-flex items-center gap-2 rounded-[100px] border border-[#dce7f0] bg-white/80 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-[#0074dd] backdrop-blur">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#0068f9]" />
-                Error 404
-              </div>
-
-              <h1
-                aria-label="Error 404"
-        className="mt-6 font-heading text-[clamp(120px,26vw,260px)] leading-[0.78] tracking-[-0.08em] text-[#121722]"
+            <motion.span {...digit(0.15)} className="relative mx-[0.04em] inline-flex h-[0.86em] w-[0.86em] items-center justify-center">
+              <motion.span
+                className="relative block size-full"
+                animate={reducedMotion ? undefined : { y: ["-4%", "4%", "-4%"], rotate: [-5, 4, -5] }}
+                transition={float}
               >
-                4<span className="text-[#0068f9]">0</span>4
-              </h1>
+                <Image
+                  src="/jrp-mark.png"
+                  alt=""
+                  fill
+                  priority
+                  sizes="(min-width: 768px) 14rem, 26vw"
+                  className="object-contain drop-shadow-[0_18px_30px_rgb(0_99_253/0.25)]"
+                />
+              </motion.span>
+              {/* Floor shadow breathes with the float */}
+              <motion.span
+                className="absolute -bottom-[0.06em] left-1/2 h-[0.06em] w-[0.6em] -translate-x-1/2 rounded-[50%] bg-foreground/15 blur-[6px]"
+                animate={reducedMotion ? undefined : { scaleX: [0.85, 1.1, 0.85], opacity: [0.55, 0.9, 0.55] }}
+                transition={float}
+              />
+            </motion.span>
 
-              <p className="mt-6 max-w-xl text-[15px] leading-[1.65] text-[#777c86] sm:text-[16px]">
-                La ruta que buscas no existe, cambió de lugar o nunca estuvo aquí. No es tu culpa:
-                a veces el código también se esconde.
-              </p>
+            <motion.span {...digit(0.25)}>4</motion.span>
+          </div>
 
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="/"
-                  className="inline-flex items-center justify-center gap-2 rounded-[48px] bg-[#0068f9] px-5 py-3 text-[13px] font-medium text-white shadow-[0_16px_34px_-16px_rgba(0,104,249,0.95)] transition-colors hover:bg-[#024bb1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0068f9] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f4f8fc]"
-                >
-                  <Home className="h-4 w-4" />
-                  Volver al inicio
-                </a>
-                <a
-                  href="/#contacto"
-                  className="group inline-flex items-center justify-center gap-2 rounded-[48px] border border-[#dce7f0] bg-white/80 px-5 py-3 text-[13px] font-medium text-[#121722] backdrop-blur transition-colors hover:border-[#0068f9]/30 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0068f9]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f4f8fc]"
-                >
-                  Hablemos de tu proyecto
-                  <ArrowUpRight className="h-4 w-4 text-[#0068f9] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
-              </div>
+          <motion.div {...digit(0.35)} className="mt-8 flex flex-col items-center">
+            <h1 className="max-w-[18ch] text-balance text-[clamp(1.9rem,4.4vw,3rem)] font-bold leading-[1.05] tracking-[-0.04em] text-foreground">
+              Esta página no existe…{" "}
+              <span className="bg-gradient-to-r from-[#0063FD] to-[#00B4FD] bg-clip-text pr-[0.08em] font-accent text-[1.1em] font-normal italic tracking-[-0.02em] text-transparent">
+                todavía.
+              </span>
+            </h1>
+            <p className="mt-4 max-w-md text-pretty text-base leading-7 text-muted-foreground">
+              Puede que haya cambiado de lugar. Hasta nuestro logo la anda buscando.
+            </p>
 
-              <div className="mt-7 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#a5a5a5]">
-                <span>JRP Core</span>
-                <span className="h-1 w-1 rounded-full bg-[#dce7f0]" />
-                <span>Software que sí aparece</span>
-              </div>
-            </motion.div>
-
-            <div className="relative mt-12 grid w-full max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4 xl:pointer-events-none xl:absolute xl:inset-0 xl:mt-0 xl:block xl:max-w-none">
-              {QUICK_CARDS.map((card) => (
-                <motion.a
-                  key={card.label}
-                  href={card.href}
-                  initial={{ opacity: 0, y: 18, rotate: card.rotation }}
-                  animate={{ opacity: 1, y: 0, rotate: card.rotation }}
-                  whileHover={{ y: -6, rotate: 0 }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{ duration: 0.5, delay: card.delay, ease: [0.16, 1, 0.3, 1] }}
-                  className={`pointer-events-auto flex w-full flex-col justify-between gap-5 rounded-[18px] border border-white/25 p-4 text-left shadow-[0_24px_50px_-30px_rgba(7,27,58,0.55)] xl:absolute xl:w-[210px] ${card.position}`}
-                  style={{ backgroundColor: card.background, color: card.foreground }}
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15">
-                      <card.icon className="h-4 w-4" strokeWidth={1.8} />
-                    </span>
-                    <ArrowUpRight className="h-4 w-4 opacity-60" />
-                  </div>
-                  <div>
-                    <span className="block text-[13px] font-semibold tracking-tight">{card.label}</span>
-                    <span className="mt-0.5 block text-[11px] leading-snug opacity-70">
-                      {card.description}
-                    </span>
-                  </div>
-                </motion.a>
-              ))}
+            <div className="mt-9 flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">
+              <Link
+                href="/"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-brand px-6 text-sm font-semibold text-brand-foreground shadow-[0_14px_30px_-12px_color-mix(in_oklab,var(--brand)_65%,transparent)] transition-all hover:-translate-y-0.5 hover:bg-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+              >
+                <Home aria-hidden="true" className="size-4" />
+                Volver al inicio
+              </Link>
+              <Link
+                href="/#contacto"
+                className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border/80 bg-white px-6 text-sm font-medium text-foreground transition-colors hover:border-brand/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+              >
+                Hablemos
+                <ArrowUpRight aria-hidden="true" className="size-4 text-brand transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
             </div>
-          </section>
-
-          <p className="sr-only">ERR:404_NOT_FOUND</p>
+          </motion.div>
         </div>
       </main>
-    </MotionConfig>
+    </>
   );
 }
