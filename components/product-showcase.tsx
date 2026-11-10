@@ -12,6 +12,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
+import Link from "next/link";
 
 const products = [
   {
@@ -260,7 +261,7 @@ export function ProductShowcase() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: shouldReduceMotion ? 0 : 0.55, delay: shouldReduceMotion ? 0 : index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="group flex h-full flex-col overflow-hidden rounded-[1.8rem] border border-border/65 bg-gradient-to-br from-surface-raised via-background to-brand-soft/35 p-3 shadow-[0_24px_65px_-38px_oklch(0.19_0.06_258/0.24)] transition-[translate,box-shadow,border-color] duration-500 ease-out hover:-translate-y-1 hover:border-brand/20 hover:shadow-[0_34px_76px_-36px_oklch(0.19_0.06_258/0.32)] sm:rounded-[2rem] sm:p-4"
+              className="group relative flex h-full flex-col overflow-hidden rounded-[1.8rem] border border-border/65 bg-gradient-to-br from-surface-raised via-background to-brand-soft/35 p-3 shadow-[0_24px_65px_-38px_oklch(0.19_0.06_258/0.24)] transition-[translate,box-shadow,border-color] duration-500 ease-out hover:-translate-y-1 hover:border-brand/20 hover:shadow-[0_34px_76px_-36px_oklch(0.19_0.06_258/0.32)] sm:rounded-[2rem] sm:p-4"
             >
               <div className="relative overflow-hidden rounded-[1.35rem] border border-white/65 bg-gradient-to-br from-brand-soft/60 via-white/70 to-accent/50 px-3 pb-5 pt-6 sm:rounded-[1.6rem] sm:px-6 sm:pb-7 sm:pt-8">
                 <div aria-hidden="true" className="absolute -right-12 -top-16 size-44 rounded-full border-[18px] border-white/35" />
@@ -307,12 +308,19 @@ export function ProductShowcase() {
                   href={whatsappHref(prompt)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group/action mt-6 inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-brand px-5 text-xs font-semibold text-brand-foreground shadow-[0_10px_22px_-12px_var(--brand)] transition-[translate,background-color,box-shadow] duration-300 hover:-translate-y-0.5 hover:bg-brand-strong hover:shadow-[0_14px_26px_-12px_var(--brand)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  className="group/action relative z-40 mt-6 inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-brand px-5 text-xs font-semibold text-brand-foreground shadow-[0_10px_22px_-12px_var(--brand)] transition-[translate,background-color,box-shadow] duration-300 hover:-translate-y-0.5 hover:bg-brand-strong hover:shadow-[0_14px_26px_-12px_var(--brand)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   Consultar sobre {name}
                   <ArrowRight aria-hidden="true" className="size-3.5 transition-transform group-hover/action:translate-x-0.5" />
                 </a>
               </div>
+              <Link
+                href={`/${id}`}
+                aria-label={`Conocer ${name}`}
+                className="absolute inset-0 z-30 rounded-[1.8rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:rounded-[2rem]"
+              >
+                <span className="sr-only">Ver detalles de {name}</span>
+              </Link>
             </motion.article>
           ))}
         </div>
