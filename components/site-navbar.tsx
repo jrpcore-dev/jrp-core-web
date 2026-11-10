@@ -73,14 +73,12 @@ export function SiteNavbar() {
       <div
         className={`relative border-b px-5 transition-[background-color,border-color,box-shadow] duration-300 sm:px-8 lg:px-10 ${
           scrolled
-            ? "border-border/60 bg-background/80 shadow-[0_10px_30px_-24px_oklch(0.19_0.06_258/0.45)] backdrop-blur-xl"
+            ? "border-border/60 bg-background/95 shadow-[0_10px_30px_-24px_oklch(0.19_0.06_258/0.45)]"
             : "border-transparent bg-transparent"
         }`}
       >
         <div
-          className={`mx-auto flex max-w-6xl items-center justify-between gap-4 transition-[height] duration-300 ${
-            scrolled ? "h-16" : "h-20"
-          }`}
+          className="mx-auto flex h-[4.5rem] max-w-6xl items-center justify-between gap-4"
         >
           <Link
             href="/#soluciones"
@@ -94,20 +92,11 @@ export function SiteNavbar() {
               width={42}
               height={42}
               priority
-              className={`object-contain transition-[width,height,transform] duration-300 group-hover:scale-105 ${
-                scrolled ? "size-8" : "size-9 sm:size-10"
-              }`}
+              className="size-9 object-contain transition-transform duration-300 group-hover:scale-105 sm:size-10"
             />
             <span className="leading-tight">
-              <span className="block font-heading text-[16px] font-bold tracking-[-0.035em] text-foreground sm:text-[17px]">
+              <span className="block font-heading text-[20px] font-bold tracking-[-0.04em] text-foreground sm:text-[22px]">
                 JRP <span className="text-brand">Core</span>
-              </span>
-              <span
-                className={`hidden font-mono text-[9px] font-medium uppercase tracking-[0.16em] text-muted-foreground transition-opacity duration-300 sm:block ${
-                  scrolled ? "sm:hidden" : ""
-                }`}
-              >
-                Ingeniería de software
               </span>
             </span>
           </Link>
@@ -120,7 +109,7 @@ export function SiteNavbar() {
                   : activeSection === link.id;
                 const spring = reducedMotion
                   ? { duration: 0 }
-                  : ({ type: "spring", stiffness: 480, damping: 38 } as const);
+                  : ({ type: "spring", stiffness: 420, damping: 34, mass: 0.8 } as const);
                 return (
                   <li key={link.id}>
                     <Link
@@ -129,14 +118,21 @@ export function SiteNavbar() {
                       onMouseEnter={() => setHovered(link.id)}
                       onFocus={() => setHovered(link.id)}
                       onBlur={() => setHovered(null)}
-                      className={`relative isolate block rounded-full px-4 py-2.5 text-[14px] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
-                        active
-                          ? "font-semibold text-foreground"
-                          : "font-medium text-muted-foreground hover:text-foreground"
+                      className={`relative isolate block rounded-full px-4 py-2 text-[14px] font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+                        active ? "text-white" : "text-muted-foreground hover:text-foreground"
                       }`}
                     >
-                      {/* Hover: soft pill that glides between links */}
-                      {hovered === link.id && (
+                      {/* Active: solid brand pill that slides between links (transform-only animation) */}
+                      {active && (
+                        <motion.span
+                          layoutId="nav-active"
+                          aria-hidden="true"
+                          transition={spring}
+                          className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-[#0063FD] to-[#0091FD] shadow-[0_6px_16px_-8px_rgb(0_99_253/0.9)]"
+                        />
+                      )}
+                      {/* Hover: soft pill, only on links that are not active */}
+                      {hovered === link.id && !active && (
                         <motion.span
                           layoutId="nav-hover"
                           aria-hidden="true"
@@ -145,15 +141,6 @@ export function SiteNavbar() {
                         />
                       )}
                       {link.label}
-                      {/* Active: short brand-gradient bar under the label */}
-                      {active && (
-                        <motion.span
-                          layoutId="nav-active"
-                          aria-hidden="true"
-                          transition={spring}
-                          className="absolute inset-x-4 bottom-1 h-[2px] rounded-full bg-gradient-to-r from-[#0063FD] to-[#00C6FD] shadow-[0_0_10px_rgb(0_140_253/0.55)]"
-                        />
-                      )}
                     </Link>
                   </li>
                 );
