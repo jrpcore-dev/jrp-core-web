@@ -4,6 +4,7 @@ import {
   animate,
   motion,
   useMotionTemplate,
+  useInView,
   useMotionValue,
   useReducedMotion,
   useScroll,
@@ -12,7 +13,7 @@ import {
 } from "framer-motion";
 import { Check, Code2, Database, MonitorSmartphone } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState, type ComponentType, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ComponentType, type CSSProperties, type ReactNode } from "react";
 import {
   SiNodedotjs,
   SiPostgresql,
@@ -184,7 +185,7 @@ function LayerLabel({
     >
       <span className="size-2 rounded-full border-2 border-brand bg-background" />
       <span className="h-px w-5 bg-brand/50" />
-      <span className="flex items-center gap-2.5 whitespace-nowrap rounded-2xl border border-white/80 bg-background/85 py-2 pl-2 pr-3.5 shadow-[0_14px_30px_-16px_oklch(0.2_0.07_258/0.35)] backdrop-blur-xl">
+      <span className="flex items-center gap-2.5 whitespace-nowrap rounded-2xl border border-white/80 bg-background py-2 pl-2 pr-3.5 shadow-[0_14px_30px_-16px_oklch(0.2_0.07_258/0.35)]">
         <span className="flex size-8 items-center justify-center rounded-xl bg-brand-soft text-brand">
           <Icon className="size-4" />
         </span>
@@ -202,7 +203,9 @@ function LayerLabel({
 export function HeroStack() {
   const reducedMotion = useReducedMotion() === true;
 
-  const tick = useTicker(PHASE_MS, !reducedMotion);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(rootRef, { amount: 0.15 });
+  const tick = useTicker(PHASE_MS, !reducedMotion && inView);
   const cycle = reducedMotion ? 0 : Math.floor(tick / PHASES);
   const phase = reducedMotion ? PHASES - 1 : tick % PHASES;
   const language = languages[cycle % languages.length];
@@ -242,8 +245,13 @@ export function HeroStack() {
   const pulseOpacity = useTransform(pulse, [0, 0.08, 0.85, 1], [0, 1, 1, 0]);
 
   return (
-    <div aria-hidden="true" className="relative mx-auto h-[420px] w-full max-w-[34rem] select-none sm:h-[560px] lg:ml-auto">
-      <div className="pointer-events-none absolute inset-x-10 bottom-16 top-24 rounded-full bg-brand/12 blur-3xl" />
+    <div
+      ref={rootRef}
+      aria-hidden="true"
+      className={`relative mx-auto h-[420px] w-full max-w-[34rem] select-none sm:h-[560px] lg:ml-auto ${inView ? "" : "hero-paused"}`}
+    >
+      {/* Soft glow as a gradient (no filter blur) */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-6 top-16 bg-[radial-gradient(closest-side,color-mix(in_oklab,var(--brand)_14%,transparent),transparent)]" />
 
       {/* Language badges */}
       {badges.map(({ key, label, icon: Icon, color, className }, index) => {
@@ -256,10 +264,9 @@ export function HeroStack() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: reducedMotion ? 0 : 0.9 + index * 0.08, ease: easeOut }}
           >
-            <motion.div
-              animate={reducedMotion ? undefined : { y: [0, -5, 0] }}
-              transition={{ duration: 4 + index * 0.6, repeat: Infinity, ease: "easeInOut" }}
-              className={`flex items-center gap-2 rounded-full border bg-background/85 py-1.5 pl-1.5 pr-3 shadow-[0_10px_24px_-14px_oklch(0.2_0.07_258/0.35)] backdrop-blur-xl transition-all duration-300 ${
+            <div
+              style={{ animationDuration: `${4 + index * 0.6}s` }}
+              className={`hero-float flex items-center gap-2 rounded-full border bg-background py-1.5 pl-1.5 pr-3 shadow-[0_10px_24px_-14px_oklch(0.2_0.07_258/0.35)] transition-[scale,border-color,box-shadow] duration-300 ${
                 isActive ? "scale-110 border-brand/40 ring-4 ring-brand/10" : "border-white/80"
               }`}
             >
@@ -272,24 +279,22 @@ export function HeroStack() {
               <span className={`text-[11px] font-semibold ${isActive ? "text-foreground" : "text-foreground/70"}`}>
                 {label}
               </span>
-            </motion.div>
+            </div>
           </motion.div>
         );
       })}
 
       {/* Scene */}
       <motion.div
-        className="absolute left-[30%] top-[66%] -translate-x-1/2 -translate-y-1/2 scale-[0.62] sm:left-[38%] sm:scale-100 lg:left-[37%] lg:scale-[0.86] xl:scale-[0.92]"
-        style={{ width: S, height: S, perspective: 1800 }}
-        animate={reducedMotion ? undefined : { y: [0, -6, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="hero-float absolute left-[30%] top-[66%] -translate-x-1/2 -translate-y-1/2 scale-[0.62] sm:left-[38%] sm:scale-100 lg:left-[37%] lg:scale-[0.86] xl:scale-[0.92]"
+        style={{ width: S, height: S, perspective: 1800, animationDuration: "6s" }}
       >
         <div
           className="relative size-full [transform-style:preserve-3d]"
           style={{ transform: "rotateX(57deg) rotateZ(-45deg)" }}
         >
           {/* Ground shadow */}
-          <div className="absolute -inset-6 rounded-[48px] bg-brand/25 blur-2xl" style={{ transform: "translateZ(-40px)" }} />
+          <div className="absolute -inset-10 bg-[radial-gradient(closest-side,color-mix(in_oklab,var(--brand)_30%,transparent),transparent)]" style={{ transform: "translateZ(-40px)" }} />
 
           {/* 1 · Code */}
           <Layer baseZ={Z.code} spread={spread}>

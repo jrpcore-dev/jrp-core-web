@@ -192,6 +192,32 @@
   }
 }
 
+/* Gentle float on the compositor (hero badges and 3D scene). */
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.hero-float {
+  animation: float-y 5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.hero-paused .hero-float {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-float {
+    animation: none;
+  }
+}
+
 /* Infinite right-to-left scroll; the track holds the content twice. */
 @keyframes marquee {
   to {

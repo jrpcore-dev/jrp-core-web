@@ -2,7 +2,6 @@
 
 import {
   AnimatePresence,
-  LayoutGroup,
   animate,
   motion,
   useInView,
@@ -37,7 +36,7 @@ import {
   Workflow,
   X,
 } from "lucide-react";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { serviceStacks, StackIcons, type TechName } from "@/components/tech-stack";
 
 const services = [
@@ -326,20 +325,23 @@ function AutomationArtwork({ active, reducedMotion }: { active: boolean; reduced
             strokeDasharray="5 6"
             className="text-brand"
           />
-          {running && (
-            <motion.circle
-              r="4.5"
-              cy="74"
-              fill="var(--brand)"
-              initial={{ cx: 62, opacity: 0 }}
-              animate={{
-                cx: [62, 62, 200, 200, 338, 338],
-                opacity: [0, 1, 1, 1, 1, 0],
-              }}
-              transition={{ ...loop, times: [0, 0.08, 0.38, 0.55, 0.82, 1] }}
-            />
-          )}
         </svg>
+
+        {/* Data packet: a full-width track translated by % (GPU transform), not an SVG attribute */}
+        {running && (
+          <div aria-hidden="true" className="pointer-events-none absolute inset-x-2 top-1/2 h-28 -translate-y-1/2">
+            <div className="absolute left-[15.5%] top-[41%] w-[69%]">
+              <motion.div
+                className="w-full will-change-transform"
+                initial={{ x: "0%", opacity: 0 }}
+                animate={{ x: ["0%", "0%", "50%", "50%", "100%", "100%"], opacity: [0, 1, 1, 1, 1, 0] }}
+                transition={{ ...loop, times: [0, 0.08, 0.38, 0.55, 0.82, 1] }}
+              >
+                <span className="block size-[9px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand shadow-[0_0_10px_var(--brand)]" />
+              </motion.div>
+            </div>
+          </div>
+        )}
 
         <div className="relative z-10 grid w-full grid-cols-3 items-center gap-1 sm:gap-2">
           {nodes.map(({ icon: Icon, label, color, at }) => (
@@ -405,7 +407,6 @@ const crmMessages = [
 ];
 
 function CrmArtwork({ active, reducedMotion }: { active: boolean; reducedMotion: boolean }) {
-  const groupId = useId();
   // Pause on the last column for one extra beat before restarting.
   const tick = useTicker(1500, active && !reducedMotion);
   const stage = reducedMotion ? 2 : Math.min(tick % 4, 2);
@@ -423,23 +424,26 @@ function CrmArtwork({ active, reducedMotion }: { active: boolean; reducedMotion:
         </span>
       </div>
 
-      <LayoutGroup id={groupId}>
-        <div className="mt-3 grid grid-cols-3 gap-1.5 sm:gap-2">
-          {crmColumns.map((column, columnIndex) => (
-            <div key={column} className="flex min-h-[132px] flex-col gap-1.5 rounded-xl bg-muted/50 p-1.5">
-              <div className="flex items-center justify-between px-0.5">
-                <span className="text-[8.5px] font-semibold text-foreground/75">{column}</span>
-                <span className="font-mono text-[8px] text-muted-foreground">
-                  {crmStaticCards[columnIndex].length + (stage === columnIndex ? 1 : 0)}
-                </span>
-              </div>
-              {stage === columnIndex && (
-                <motion.div
-                  layoutId="lead"
-                  transition={{ duration: reducedMotion ? 0 : 0.6, ease: easeOut }}
-                  className={`relative rounded-lg border bg-background p-1.5 shadow-[0_8px_18px_-10px_oklch(0.2_0.06_258/0.4)] ${
+      <div className="mt-3 grid grid-cols-3 gap-1.5 [--crm-gap:0.375rem] sm:gap-2 sm:[--crm-gap:0.5rem]">
+        {crmColumns.map((column, columnIndex) => (
+          <div key={column} className="flex min-h-[132px] flex-col gap-1.5 rounded-xl bg-muted/50 p-1.5">
+            <div className="flex items-center justify-between px-0.5">
+              <span className="text-[8.5px] font-semibold text-foreground/75">{column}</span>
+              <span className="font-mono text-[8px] text-muted-foreground">
+                {crmStaticCards[columnIndex].length + (stage === columnIndex ? 1 : 0)}
+              </span>
+            </div>
+            {/* Fixed slot; the lead lives in column 0 and is translated across (GPU transform) */}
+            <div className="relative h-9">
+              {columnIndex === 0 && (
+                <div
+                  className={`absolute inset-x-0 top-0 z-10 rounded-lg border bg-background p-1.5 shadow-[0_8px_18px_-10px_oklch(0.2_0.06_258/0.4)] will-change-transform ${
                     closed ? "border-success/40" : "border-brand/35"
                   }`}
+                  style={{
+                    transform: `translateX(calc(${stage} * (100% + 0.75rem + var(--crm-gap))))`,
+                    transition: reducedMotion ? "none" : "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s",
+                  }}
                 >
                   <div className="flex items-center gap-1.5">
                     <span
@@ -454,25 +458,20 @@ function CrmArtwork({ active, reducedMotion }: { active: boolean; reducedMotion:
                       <span className="block truncate text-[7.5px] text-muted-foreground">Cotización</span>
                     </span>
                   </div>
-                </motion.div>
+                </div>
               )}
-              {crmStaticCards[columnIndex].map(({ initials, name, tone }) => (
-                <motion.div
-                  layout
-                  transition={{ duration: reducedMotion ? 0 : 0.6, ease: easeOut }}
-                  key={name}
-                  className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-background/80 p-1.5"
-                >
-                  <span className={`flex size-5 shrink-0 items-center justify-center rounded-full text-[7.5px] font-semibold ${tone}`}>
-                    {initials}
-                  </span>
-                  <span className="truncate text-[8.5px] text-foreground/70">{name}</span>
-                </motion.div>
-              ))}
             </div>
-          ))}
-        </div>
-      </LayoutGroup>
+            {crmStaticCards[columnIndex].map(({ initials, name, tone }) => (
+              <div key={name} className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-background/80 p-1.5">
+                <span className={`flex size-5 shrink-0 items-center justify-center rounded-full text-[7.5px] font-semibold ${tone}`}>
+                  {initials}
+                </span>
+                <span className="truncate text-[8.5px] text-foreground/70">{name}</span>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
 
       <div
         className={`mt-3 flex items-center gap-2 rounded-xl px-3 py-2 text-[9px] font-medium transition-colors duration-300 ${
@@ -699,14 +698,12 @@ function ServiceListItem({
   index,
   isActive,
   progress,
-  reducedMotion,
   onSelect,
 }: {
   service: (typeof services)[number];
   index: number;
   isActive: boolean;
   progress: MotionValue<number>;
-  reducedMotion: boolean;
   onSelect: (index: number) => void;
 }) {
   const n = services.length;
@@ -734,33 +731,6 @@ function ServiceListItem({
           {service.eyebrow}
         </span>
       </button>
-      <AnimatePresence initial={false}>
-        {isActive && (
-          <motion.div
-            key="details"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: reducedMotion ? 0 : 0.45, ease: easeOut }}
-            className="overflow-hidden"
-          >
-            <h3 className="mt-1 max-w-[22ch] text-balance text-[clamp(1.35rem,2vw,1.75rem)] font-semibold leading-[1.1] tracking-[-0.04em] text-foreground">
-              {service.title}
-            </h3>
-            <p className="mt-3 max-w-md text-sm leading-6 text-muted-foreground">{service.description}</p>
-            <ul className="mt-4 flex flex-wrap gap-2 pb-3">
-              {service.tags.map((tag) => (
-                <li
-                  key={tag}
-                  className="rounded-full border border-border/70 bg-background/80 px-3 py-1.5 text-[11px] font-medium text-foreground/75 shadow-sm"
-                >
-                  {tag}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </li>
   );
 }
@@ -963,11 +933,45 @@ function DesktopShowcase({ reducedMotion }: { reducedMotion: boolean }) {
                   index={index}
                   isActive={index === activeIndex}
                   progress={scrollYProgress}
-                  reducedMotion={reducedMotion}
                   onSelect={scrollToService}
                 />
               ))}
             </ol>
+
+            {/* Active service details: all stacked in one grid cell, crossfaded with opacity/transform only */}
+            <div className="mt-6 grid">
+              {services.map((service, index) => {
+                const on = index === activeIndex;
+                return (
+                  <div
+                    key={service.number}
+                    aria-hidden={!on}
+                    className="[grid-area:1/1]"
+                    style={{
+                      opacity: on ? 1 : 0,
+                      transform: on ? "none" : "translateY(10px)",
+                      transition: reducedMotion ? "none" : "opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+                      pointerEvents: on ? "auto" : "none",
+                    }}
+                  >
+                    <h3 className="max-w-[22ch] text-balance text-[clamp(1.35rem,2vw,1.75rem)] font-semibold leading-[1.1] tracking-[-0.04em] text-foreground">
+                      {service.title}
+                    </h3>
+                    <p className="mt-3 max-w-md text-sm leading-6 text-muted-foreground">{service.description}</p>
+                    <ul className="mt-4 flex flex-wrap gap-2">
+                      {service.tags.map((tag) => (
+                        <li
+                          key={tag}
+                          className="rounded-full border border-border/70 bg-background/80 px-3 py-1.5 text-[11px] font-medium text-foreground/75 shadow-sm"
+                        >
+                          {tag}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           <div className="relative isolate flex h-[min(680px,calc(100svh_-_7.5rem))] flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-[0_1px_2px_oklch(0.2_0.05_258/0.06),0_28px_56px_-36px_oklch(0.2_0.06_258/0.35)]">
@@ -989,15 +993,15 @@ function DesktopShowcase({ reducedMotion }: { reducedMotion: boolean }) {
             {/* Stage: dark studio backdrop lit from above in the service's accent color */}
             <div className="relative isolate flex flex-1 items-center justify-center overflow-hidden bg-[#0b1120] px-8 xl:px-12">
               <StageLight accent={meta.accent} id={meta.path} reducedMotion={reducedMotion} />
-              <motion.div style={{ y: artworkY }} className="relative w-full">
-                <AnimatePresence mode="wait" initial={false}>
+              <motion.div style={{ y: artworkY }} className="relative grid w-full items-center will-change-transform">
+                <AnimatePresence initial={false}>
                   <motion.div
                     key={active.number}
                     initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.97 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -16, scale: 0.98 }}
                     transition={{ duration: reducedMotion ? 0 : 0.4, ease: easeOut }}
-                    className="w-full"
+                    className="w-full [grid-area:1/1]"
                   >
                     <div className="mx-auto w-[410px] lg:[zoom:1.08] xl:[zoom:1.22] min-[100rem]:[zoom:1.4] min-[112rem]:[zoom:1.5]">
                       <ServiceArtwork type={active.visual} active={stageInView} reducedMotion={reducedMotion} />
