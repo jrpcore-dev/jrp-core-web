@@ -192,10 +192,10 @@
   }
 }
 
-/* Terminal block cursor blink (tech stack prompt). */
-@keyframes caret {
-  50% {
-    opacity: 0;
+/* Infinite right-to-left scroll; the track holds the content twice. */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
   }
 }
 
