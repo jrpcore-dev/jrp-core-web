@@ -418,7 +418,7 @@ export function ProductVendia() {
       </section>
 
       {/* Features: cards with live mini frames of the system */}
-      <section id="funciones" className="scroll-mt-20 bg-canvas px-5 py-20 sm:px-8 sm:py-24 lg:px-10">
+      <section id="funciones" className="scroll-mt-20 px-5 py-20 sm:px-8 sm:py-24 lg:px-10">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 flex flex-col gap-4 sm:mb-14 lg:flex-row lg:items-end lg:justify-between">
             <div>
@@ -465,8 +465,8 @@ export function ProductVendia() {
       </section>
 
       {/* How to start */}
-      <section className="bg-canvas px-5 py-20 sm:px-8 sm:py-24 lg:px-10">
-        <div className="mx-auto max-w-6xl">
+      <section className="px-5 py-12 sm:px-8 sm:py-16 lg:px-10">
+        <div className="mx-auto max-w-6xl rounded-[2rem] bg-canvas px-6 py-12 sm:px-10 sm:py-14 lg:px-14">
           <SectionLabel>03 / cómo empiezas</SectionLabel>
           <h2 className="mt-5 max-w-[20ch] text-balance text-[clamp(2rem,4vw,3rem)] font-bold leading-[1.05] tracking-[-0.045em] text-foreground">
             De la demo a tu primera venta, te acompañamos.

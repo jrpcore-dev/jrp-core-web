@@ -14,7 +14,7 @@ import { ScrollReveal, SectionEyebrow } from "@/components/product-page-shared";
 
 export function ProductBarber() {
   return (
-    <section id="barber-pos" className="relative overflow-hidden border-y border-[#dce7f0] bg-[#ffffff] py-20 lg:py-28">
+    <section id="barber-pos" className="relative overflow-hidden py-20 lg:py-28">
       <div className="relative mx-auto max-w-[1200px] px-5 sm:px-8">
         <ScrollReveal yOffset={28}>
           <div className="mb-12 max-w-3xl sm:mb-16">

@@ -171,22 +171,7 @@ export function ContactForm({ defaultInterest = 'vendia' }: { defaultInterest?: 
     <section
       id="contacto"
       className="relative overflow-hidden py-20 lg:py-28"
-      style={{
-        background:
-          'linear-gradient(150deg, #f4f8fc 0%, #e8f7fc 42%, #dceef8 78%, #cfe4f3 100%)',
-      }}
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-60"
-        style={{
-          backgroundImage: 'radial-gradient(rgba(0,104,249,0.10) 1px, transparent 1px)',
-          backgroundSize: '28px 28px',
-          WebkitMaskImage: 'radial-gradient(ellipse at 50% 0%, black 0%, transparent 72%)',
-          maskImage: 'radial-gradient(ellipse at 50% 0%, black 0%, transparent 72%)',
-        }}
-      />
-
       <div className="relative mx-auto max-w-[1200px] px-5 sm:px-8">
         <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-12 lg:gap-6">
           {/* Left: direct contact panel */}

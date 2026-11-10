@@ -234,9 +234,9 @@ export function ProductShowcase() {
     <section
       id="productos"
       aria-labelledby="products-title"
-      className="relative isolate overflow-hidden bg-canvas px-5 py-20 sm:px-8 sm:py-24 lg:px-10 lg:py-28"
+      className="relative isolate overflow-hidden px-5 py-20 sm:px-8 sm:py-24 lg:px-10 lg:py-28"
     >
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_50%_0%,color-mix(in_oklab,var(--brand)_8%,transparent),transparent_62%)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_50%_35%_at_50%_30%,color-mix(in_oklab,var(--brand)_7%,transparent),transparent_70%)]" />
       <div className="relative z-10 mx-auto max-w-6xl">
         <div className="mb-10 flex flex-col justify-between gap-5 sm:mb-12 sm:flex-row sm:items-end">
           <div className="max-w-3xl">

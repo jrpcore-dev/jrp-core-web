@@ -1184,7 +1184,7 @@ export function ServicesSection() {
     <section
       id="sistemas"
       aria-labelledby="services-title"
-      className="relative isolate overflow-clip bg-canvas"
+      className="relative isolate overflow-clip"
     >
       <div
         aria-hidden="true"

@@ -142,7 +142,7 @@ export function ProcessSection() {
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_55%_40%_at_10%_0%,color-mix(in_oklab,var(--brand)_8%,transparent),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_45%_35%_at_15%_35%,color-mix(in_oklab,var(--brand)_8%,transparent),transparent_70%)]"
       />
 
       <div className="mx-auto max-w-6xl">

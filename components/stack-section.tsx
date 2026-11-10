@@ -6,7 +6,7 @@ export function StackSection() {
     <section
       id="tecnologias"
       aria-label="Tecnologías con las que trabajamos"
-      className="relative scroll-mt-16 border-y border-border/70 bg-canvas px-5 py-10 sm:px-8 sm:py-12 lg:px-10"
+      className="relative scroll-mt-16 px-5 py-6 sm:px-8 sm:py-8 lg:px-10"
     >
       <div className="mx-auto max-w-6xl">
         <StackTable />

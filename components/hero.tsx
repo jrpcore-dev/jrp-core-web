@@ -23,7 +23,7 @@ export function Hero() {
       className="relative isolate flex min-h-[calc(100svh_-_5.5rem)] scroll-mt-28 items-center overflow-hidden px-5 py-16 sm:px-8 sm:py-20 lg:px-10 lg:py-24"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_35%,color-mix(in_oklab,var(--brand)_12%,transparent),transparent_38%),linear-gradient(180deg,var(--background),var(--canvas))]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_35%,color-mix(in_oklab,var(--brand)_12%,transparent),transparent_38%)]" />
         <div className="absolute -right-40 top-[-12rem] size-[34rem] rounded-full border border-brand/10" />
         <div className="absolute -right-20 top-[-8rem] size-[26rem] rounded-full border border-brand/10" />
         <div className="absolute -right-4 top-[-4rem] size-[18rem] rounded-full border border-brand/10" />
